@@ -15,6 +15,7 @@
             <h3>Category multi nestedset basic</h3>
             @include('category.select', ['categoriesSelect' => $categoriesSelect])
             @include('category.table', ['categories' => $categories])
+            @include('category.ul', ['categoriesUlList' => $categoriesUlList])
         </div>
     </div>
 </div>

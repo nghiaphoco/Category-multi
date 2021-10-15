@@ -9,12 +9,27 @@ class CategoryController extends Controller
 {
     public function index ()
     {
-        $categories = Category::withDepth()->having('depth', '>', 0)->get()->toFlatTree();
-        $categoriesSelect = Category::withDepth()->get()->toFlatTree();
+        $categories = Category::withDepth()->having('depth', '>', 0)->defaultOrder()->get()->toFlatTree();
+        $categoriesSelect = Category::withDepth()->defaultOrder()->get()->toFlatTree();
+        $categoriesUlList = Category::withDepth()->having('depth', '>', 0)->defaultOrder()->get()->toTree();
         $data = [
             'categories' => $categories,
-            'categoriesSelect' => $categoriesSelect
+            'categoriesSelect' => $categoriesSelect,
+            'categoriesUlList' => $categoriesUlList
         ];
         return view ('category.index', $data);
+    }
+
+    public function move (Request $request, $id, $type)
+    {
+        $node = Category::find($id);
+        if ($node) {
+            if ($type == 'up') {
+                $node->up();
+            } elseif ($type == 'down') {
+                $node->down();
+            }
+        }
+        return redirect()->back();
     }
 }
